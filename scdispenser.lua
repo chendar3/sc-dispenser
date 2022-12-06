@@ -199,14 +199,14 @@ end
 
 function liquefusion()
 	local SCtarget = Targeted.id
-	windower.chat.input('/p Opening SC: '..translate(Liquefaction)..' > '..translate(Fusion)..' - MB: '..translate(Fire)..'.')
+	windower.chat.input('/p Opening SC: '..translate('Liquefaction')..' > '..translate('Fusion')..' - MB: '..translate('Fire')..'.')
 	windower.chat.input('/ja Immanence <me>')
 	windower.chat.input:schedule(1.5, '/ma Stone '..SCtarget)
 	windower.chat.input:schedule(5.5, '/ja Immanence <me>')
-	windower.chat.input:schedule(7, '/p Closing SC: '..translate(Liquefaction)..' - MB: '..translate(Fire)..' now!')
+	windower.chat.input:schedule(7, '/p Closing SC: '..translate('Liquefaction')..' - MB: '..translate('Fire')..' now!')
 	windower.chat.input:schedule(7, '/ma Fire '..SCtarget)
 	windower.chat.input:schedule(13,'/ja Immanence <me>' )
-	windower.chat.input:schedule(14.5, '/p Closing SC: '..translate(Fusion)..' - MB: '..translate(Fire)..' now!')
+	windower.chat.input:schedule(14.5, '/p Closing SC: '..translate('Fusion')..' - MB: '..translate('Fire')..' now!')
 	windower.chat.input:schedule(14.5, '/ma Ionohelix '..SCtarget)
 	if BurstMode == 'on' and (Ebullience or buff_check(377)) then
 		windower.chat.input:schedule(19.5,'/ja Ebullience <me>')
