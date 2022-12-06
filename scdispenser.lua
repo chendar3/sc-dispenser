@@ -149,7 +149,7 @@ function make_boom(arg)
 		Targeted = nil
 	end
 	
-	if not Targeted.is_npc then
+	if not Targeted or not Targeted.is_npc then
 		windower.add_to_chat(122, 'Invalid target. Aborting skillchain')
 		return
 	end
@@ -247,11 +247,11 @@ end
 function update_hud()
 	HUD:text('Element: '..CurrentElement..'\n'..'Burst: '..BurstMode..'\n'..'Ebullience: '..tostring(Ebullience))
 	HUD:color(Color[1], Color[2], Color[3])
-	-- if check_job() then
-		-- HUD:show()
-	-- else
-		-- HUD:hide()
-	-- end
+	if check_job() == true then
+		HUD:show()
+	else
+		HUD:hide()
+	end
 end
 
 handle_commands = function(...)
@@ -304,7 +304,7 @@ end
 
 windower.register_event('addon command', handle_commands)
 
-windower.register_event('load', init())
+windower.register_event('load', init)
 
-windower.register_event('job change', update_hud())
+windower.register_event('job change', update_hud)
  
