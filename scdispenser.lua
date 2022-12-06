@@ -28,7 +28,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 _addon.name = 'Skillchain Dispenser'
 _addon.author = 'Chendar'
-_addon.version = '1.0.1'
+_addon.version = '1.0.2'
 _addon.command = 'scd'
 _addon.commands = {'sc', 'element', 'burst', 'ebullience'}
 
@@ -180,11 +180,11 @@ function make_boom(arg)
 		SCnuke = CurrentElement..' V'
 	end
 				
-	windower.chat.input('/p Opening SC: '..SCname..' - MB: '..SCelement..'.')
+	windower.chat.input('/p Opening SC: '..translate(SCname)..' - MB: '..translate(SCelement)..'.')
 	windower.chat.input('/ja Immanence <me>')
 	windower.chat.input:schedule(1.5, '/ma '..SCopener..' '..SCtarget)
 	windower.chat.input:schedule(1.5 + SCdelay, '/ja Immanence <me>')
-	windower.chat.input:schedule(3 + SCdelay, '/p Closing SC: '..SCname..' - MB: '..SCelement..' now!')
+	windower.chat.input:schedule(3 + SCdelay, '/p Closing SC: '..translate(SCname)..' - MB: '..translate(SCelement)..' now!')
 	windower.chat.input:schedule(3 + SCdelay, '/ma '..SCcloser..' '..SCtarget)
 	
 	if BurstMode == 'on' and (Ebullience or buff_check(377)) then
@@ -199,14 +199,14 @@ end
 
 function liquefusion()
 	local SCtarget = Targeted.id
-	windower.chat.input('/p Opening SC: Liquefaction > Fusion - MB: Fire.')
+	windower.chat.input('/p Opening SC: '..translate(Liquefaction)..' > '..translate(Fusion)..' - MB: '..translate(Fire)..'.')
 	windower.chat.input('/ja Immanence <me>')
 	windower.chat.input:schedule(1.5, '/ma Stone '..SCtarget)
 	windower.chat.input:schedule(5.5, '/ja Immanence <me>')
-	windower.chat.input:schedule(7, '/p Closing SC: Liquefaction - MB: Fire now!')
+	windower.chat.input:schedule(7, '/p Closing SC: '..translate(Liquefaction)..' - MB: '..translate(Fire)..' now!')
 	windower.chat.input:schedule(7, '/ma Fire '..SCtarget)
 	windower.chat.input:schedule(13,'/ja Immanence <me>' )
-	windower.chat.input:schedule(14.5, '/p Closing SC: Fusion - MB: Fire now!')
+	windower.chat.input:schedule(14.5, '/p Closing SC: '..translate(Fusion)..' - MB: '..translate(Fire)..' now!')
 	windower.chat.input:schedule(14.5, '/ma Ionohelix '..SCtarget)
 	if BurstMode == 'on' and (Ebullience or buff_check(377)) then
 		windower.chat.input:schedule(19.5,'/ja Ebullience <me>')
@@ -226,12 +226,6 @@ function sixstep()
 	end
 end
 
-function check_job()
-	if windower.ffxi.get_player().main_job_id ~= 20 then
-		return true
-	end	
-end
-
 function buff_check(check)	
 	Buffs = T(windower.ffxi.get_player().buffs)
 	if Buffs:contains(check) then
@@ -247,11 +241,6 @@ end
 function update_hud()
 	HUD:text('Element: '..CurrentElement..'\n'..'Burst: '..BurstMode..'\n'..'Ebullience: '..tostring(Ebullience))
 	HUD:color(Color[1], Color[2], Color[3])
-	if check_job() == true then
-		HUD:show()
-	else
-		HUD:hide()
-	end
 end
 
 handle_commands = function(...)
@@ -290,17 +279,31 @@ handle_commands = function(...)
 	end
 end
 
-do
-    local cache = {}
-    translate = function(term)
-        if not cache[term] then
-            local entry = res.auto_translates:with('english', term)
-            cache[term] = entry and 'CH>HC':pack(0xFD, 0x0202, entry.id, 0xFD) or term
-        end
-
-        return cache[term]
-    end
+function translate(term)
+	Translates = {}
+	Translates.Fusion = string.char(0xFD, 0x02, 0x02, 0x1E, 0xC1, 0xFD )
+	Translates.Distortion = string.char(0xFD, 0x02, 0x02, 0x1E, 0xC0, 0xFD )
+	Translates.Gravitation = string.char(0xFD, 0x02, 0x02, 0x1E, 0xBE, 0xFD )
+	Translates.Fragmentation = string.char(0xFD, 0x02, 0x02, 0x1E, 0xBF, 0xFD )
+	Translates.Reverberation = string.char(0xFD, 0x02, 0x02, 0x1E, 0xC5, 0xFD )
+	Translates.Liquefaction = string.char(0xFD, 0x02, 0x02, 0x1E, 0xC3, 0xFD )
+	Translates.Compression = string.char(0xFD, 0x02, 0x02, 0x1E, 0xC2, 0xFD )
+	Translates.Transfixion = string.char(0xFD, 0x02, 0x02, 0x1E, 0xC6, 0xFD )
+	Translates.Induration = string.char(0xFD, 0x02, 0x02, 0x1E, 0xC4, 0xFD )
+	Translates.Detonation = string.char(0xFD, 0x02, 0x02, 0x1E, 0xC8, 0xFD )
+	Translates.Impaction = string.char(0xFD, 0x02, 0x02, 0x1E, 0xC9, 0xFD )
+	Translates.Scission = string.char(0xFD, 0x02, 0x02, 0x1E, 0xC7, 0xFD )	
+	Translates.Fire = string.char(0xFD, 0x02, 0x02, 0x1B, 0x52, 0xFD)
+	Translates.Blizzard = string.char(0xFD, 0x02, 0x02, 0x1B, 0x53, 0xFD)
+	Translates.Water = string.char(0xFD, 0x02, 0x02, 0x1B, 0x4D, 0xFD)
+	Translates.Aero = string.char(0xFD, 0x02, 0x02, 0x1B, 0x54, 0xFD)
+	Translates.Thunder = string.char(0xFD, 0x02, 0x02, 0x1B, 0x56, 0xFD)
+	Translates.Stone = string.char(0xFD, 0x02, 0x02, 0x1B, 0x58, 0xFD)
+	Translates.Light = string.char(0xFD, 0x02, 0x02, 0x1E, 0x4B, 0xFD)
+	local translate = Translates[term] or term
+	return translate
 end
+
 
 windower.register_event('addon command', handle_commands)
 
