@@ -22,6 +22,7 @@ Note: Does not keep track of stratagem usage and timing may very well be off if 
 **Changes:**  
 v1.0.1 - v1.0.2
  * added auto-translates to chat messages
+ 
 v1.0.0 - v1.0.1
  * added 'liquefusion' for making a 3 step fire skillchain
         
