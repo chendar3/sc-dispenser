@@ -28,7 +28,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 _addon.name = 'Skillchain Dispenser'
 _addon.author = 'Chendar'
-_addon.version = '1.0'
+_addon.version = '1.0.0-alpha'
 _addon.command = 'scd'
 _addon.commands = {'sc', 'element', 'burst', 'ebullience'}
 
