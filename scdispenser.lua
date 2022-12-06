@@ -42,7 +42,6 @@ function init()
 	Skillchain = {}
 		Skillchain.Fire = {
 			skillchain='Fusion',
-			element='Fire/Light',
 			opener='Fire',
 			closer='Ionohelix',
 			mbhelix='Pyrohelix II',
@@ -50,7 +49,6 @@ function init()
 			}	
 		Skillchain.Water = {
 			skillchain='Distortion',
-			element='Water/Ice',
 			opener='Luminohelix',
 			closer='Geohelix',
 			mbhelix='Hydrohelix II',
@@ -58,7 +56,6 @@ function init()
 			}
 		Skillchain.Thunder = {
 			skillchain='Fragmentation',
-			element='Lightning/Wind',
 			opener='Blizzard',
 			closer='Hydrohelix',
 			mbhelix='Ionohelix II',
@@ -66,7 +63,6 @@ function init()
 			}
 		Skillchain.Stone = {
 			skillchain='Gravitation',
-			element='Earth/Dark',
 			opener='Aero',
 			closer='Noctohelix',
 			mbhelix='Geohelix II',
@@ -74,7 +70,6 @@ function init()
 			}
 		Skillchain.Aero = {
 			skillchain='Fragmentation',
-			element='Lightning/Wind',
 			opener='Blizzard',
 			closer='Hydrohelix',
 			mbhelix='Anemohelix II',
@@ -82,7 +77,6 @@ function init()
 			}
 		Skillchain.Blizzard = {
 			skillchain='Distortion',
-			element='Water/Ice',
 			opener='Luminohelix',
 			closer='Geohelix',
 			mbhelix='Cryohelix II',
@@ -90,7 +84,6 @@ function init()
 			}
 		Skillchain.Light = {
 			skillchain='Fusion',
-			element='Fire/Light',
 			opener='Fire',
 			closer='Ionohelix',
 			mbhelix='Luminohelix II',
@@ -98,7 +91,6 @@ function init()
 			}
 		Skillchain.Dark = {
 			skillchain='Gravitation',
-			element='Earth/Dark',
 			opener='Aero',
 			closer='Noctohelix',
 			mbhelix='Noctohelix II',
@@ -145,6 +137,7 @@ function make_boom(arg)
 		--402 = add: black
 		--470 = immanence
 		--365 = ebullience		
+		--377 = tabula rasa
 	if not buff_check(359) then
 		windower.add_to_chat(122, 'Dark Arts not active. Aborting skillchain')
 		return
@@ -167,8 +160,21 @@ function make_boom(arg)
 		return
 	end
 	
-	target = Targeted.id
-		
+	local SCtarget = Targeted.id
+	local SCname = Skillchain[CurrentElement].skillchain
+	local SCelement = CurrentElement
+	local SCopener = Skillchain[CurrentElement].opener
+	local SCcloser = Skillchain[CurrentElement].closer
+	local SCdelay = Skillchain[CurrentElement].delay
+	local SChelix = Skillchain[CurrentElement].mbhelix
+	local SCnuke = CurrentElement..' V'
+				
+	windower.chat.input('/p Opening SC: '..translate(SCname)..' - MB: '..translate(SCelement)..'.')
+	windower.chat.input('/ja Immanence <me>')
+	windower.chat.input:schedule(1.5, '/ma '..SCopener..' '..SCtarget)
+	windower.chat.input:schedule(1.5 + SCdelay, '/ja Immanence <me>')
+	windower.chat.input:schedule(3 + SCdelay, '/p Closing SC: '..translate(SCname)..' - MB: '..translate(SCelement)..' now!'
+	windower.chat.input:schedule(3 + SCdelay, '/ma '..SCcloser..' '..SCtarget)
 		--windower.add_to_chat(122, index)
 end
 
