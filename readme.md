@@ -1,5 +1,7 @@
 **Author:** Chendar  
-**Version:** 1.0.1
+
+**Version:** 1.0.1 
+
 **Description:**  
 Simple addon for making skillchains using immancence on a scholar and bursting off of those if enabled.
 Note: Does not keep track of stratagem usage so keep that in mind.
