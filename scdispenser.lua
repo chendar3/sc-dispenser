@@ -41,59 +41,67 @@ function init()
 	Ele_index = 1
 	Skillchain = {}
 		Skillchain.Fire = {
-			skillchain="Fusion",
-			element="Fire/Light",
-			opener="Fire",
-			closer="Ionohelix",
+			skillchain='Fusion',
+			element='Fire/Light',
+			opener='Fire',
+			closer='Ionohelix',
+			mbhelix='Pyrohelix II',
 			delay=4,
 			}	
 		Skillchain.Water = {
-			skillchain="Distortion",
-			element="Water/Ice",
-			opener="Luminohelix",
-			closer="Geohelix",
+			skillchain='Distortion',
+			element='Water/Ice',
+			opener='Luminohelix',
+			closer='Geohelix',
+			mbhelix='Hydrohelix II',
 			delay=6,
 			}
 		Skillchain.Thunder = {
-			skillchain="Fragmentation",
-			element="Lightning/Wind",
-			opener="Blizzard",
-			closer="Hydrohelix",
+			skillchain='Fragmentation',
+			element='Lightning/Wind',
+			opener='Blizzard',
+			closer='Hydrohelix',
+			mbhelix='Ionohelix II',
 			delay=4,
 			}
 		Skillchain.Stone = {
-			skillchain="Gravitation",
-			element="Earth/Dark",
-			opener="Aero",
-			closer="Noctohelix",
+			skillchain='Gravitation',
+			element='Earth/Dark',
+			opener='Aero',
+			closer='Noctohelix',
+			mbhelix='Geohelix II',
 			delay=4,
 			}
 		Skillchain.Aero = {
-			skillchain="Fragmentation",
-			element="Lightning/Wind",
-			opener="Blizzard",
-			closer="Hydrohelix",
+			skillchain='Fragmentation',
+			element='Lightning/Wind',
+			opener='Blizzard',
+			closer='Hydrohelix',
+			mbhelix='Anemohelix II',
 			delay=4,
 			}
 		Skillchain.Blizzard = {
-			skillchain="Distortion",
-			element="Water/Ice",
-			opener="Luminohelix",
-			closer="Geohelix",
+			skillchain='Distortion',
+			element='Water/Ice',
+			opener='Luminohelix',
+			closer='Geohelix',
+			mbhelix='Cryohelix II',
 			delay=6,
 			}
 		Skillchain.Light = {
-			skillchain="Fusion",
-			element="Fire/Light",
-			opener="Fire",
-			closer="Ionohelix",
+			skillchain='Fusion',
+			element='Fire/Light',
+			opener='Fire',
+			closer='Ionohelix',
+			mbhelix='Luminohelix II',
 			delay=4,
 			}
 		Skillchain.Dark = {
-			skillchain="Gravitation",
-			element="Earth/Dark",
-			opener="Aero",
-			closer="Noctohelix",
+			skillchain='Gravitation',
+			element='Earth/Dark',
+			opener='Aero',
+			closer='Noctohelix',
+			mbhelix='Noctohelix II',
 			delay=4,
 			}
 	
@@ -137,21 +145,33 @@ function make_boom(arg)
 		--402 = add: black
 		--470 = immanence
 		--365 = ebullience
+		
 	if not buff_check(359) then
 		windower.add_to_chat(122, 'Dark Arts not active. Aborting skillchain')
 		return
 	end		
-
-	local Index = windower.ffxi.get_player().target_index 
-	local Target = windower.ffxi.get_mob_by_index(Index)
 	
-	if Target.is_npc then
-		windower.add_to_chat(122, 'BOOOM!')
-	else
-		windower.add_to_chat(122, tostring(Target.type))
+	local Targeted = windower.ffxi.get_mob_by_index(windower.ffxi.get_player().target_index)
+	
+	if not Targeted.is_npc then
+		windower.add_to_chat(122, 'Invalid target. Aborting skillchain')
+		return
 	end
 	
+	if arg[1] ~= nil then special = arg[1]:lower end
+	if special == 'liquifusion' or special == 'sixstep' then
+		special()
+	else
+		
 		--windower.add_to_chat(122, index)
+end
+
+function liquifusion()
+	windower.add_to_chat(122, '3step')
+end
+
+function sixstep()
+	windower.add_to_chat(122, '6step')
 end
 
 function check_job()
