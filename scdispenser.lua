@@ -124,11 +124,10 @@ function init()
 	HUD:pos(15,90)
 	HUD:color(Color[1], Color[2], Color[3])
 	
-	if not check_job() then
-		HUD:hide()
-		return	
-	else
+	if check_job() then
 		HUD:show()
+	else
+		HUD:hide()
 	end
 end
 
@@ -154,10 +153,14 @@ function make_boom(arg)
 		return
 	end
 	
-	if arg[1] ~= nil then special = arg[1]:lower end
-	if special == 'liquifusion' or special == 'sixstep' then
-		special()
-		return
+	if arg[1] ~= nil then 
+		if arg[1] == 'liquifusion' then
+			liquefusion()
+			return
+		elseif arg[1] == 'sixstep' then
+			sixstep()
+			return
+		end
 	end
 	
 	local SCtarget = Targeted.id
@@ -169,21 +172,50 @@ function make_boom(arg)
 	local SChelix = Skillchain[CurrentElement].mbhelix
 	local SCnuke = CurrentElement..' V'
 				
-	windower.chat.input('/p Opening SC: '..translate(SCname)..' - MB: '..translate(SCelement)..'.')
+	windower.chat.input('/p Opening SC: '..SCname..' - MB: '..SCelement..'.')
 	windower.chat.input('/ja Immanence <me>')
 	windower.chat.input:schedule(1.5, '/ma '..SCopener..' '..SCtarget)
 	windower.chat.input:schedule(1.5 + SCdelay, '/ja Immanence <me>')
-	windower.chat.input:schedule(3 + SCdelay, '/p Closing SC: '..translate(SCname)..' - MB: '..translate(SCelement)..' now!'
+	windower.chat.input:schedule(3 + SCdelay, '/p Closing SC: '..SCname..' - MB: '..SCelement..' now!')
 	windower.chat.input:schedule(3 + SCdelay, '/ma '..SCcloser..' '..SCtarget)
-		--windower.add_to_chat(122, index)
+	
+	if BurstMode == 'on' and (Ebullience or buff_check(377)) then
+		windower.chat.input:schedule(10 + SCdelay,'/ja Ebullience <me>')
+		windower.chat.input:schedule(11 + SCdelay,'/ma '..SCnuke..' '..SCtarget)
+	elseif BurstMode == 'on' then
+		windower.chat.input:schedule(10 + SCdelay,'/ma '..SCnuke..' '..SCtarget)
+	else if BurstMode == 'helix' then
+		windower.chat.input:schedule(10 + SCdelay,'/ma '..SChelix..' '..SCtarget)
+	end
 end
 
-function liquifusion()
-	windower.add_to_chat(122, '3step')
+function liquefusion()
+	local SCtarget = Targeted.id
+	windower.chat.input('/p Opening SC: Liquefaction > Fusion - MB: Fire.')
+	windower.chat.input('/ja Immanence <me>')
+	windower.chat.input:schedule(1.5, '/ma Stone '..SCtarget)
+	windower.chat.input:schedule(5.5, '/ja Immanence <me>')
+	windower.chat.input:schedule(7, '/p Closing SC: Liquefaction - MB: Fire now!')
+	windower.chat.input:schedule(7, '/ma Fire '..SCtarget)
+	windower.chat.input:schedule(13,'/ja Immanence <me>' )
+	windower.chat.input:schedule(14.5, '/p Closing SC: Fusion - MB: Fire now!')
+	windower.chat.input:schedule(14.5, '/ma Ionohelix '..SCtarget)
+	if BurstMode == 'on' and (Ebullience or buff_check(377)) then
+		windower.chat.input:schedule(21.5,'/ja Ebullience <me>')
+		windower.chat.input:schedule(22.5,'/ma "Fire V" '..SCtarget)
+	elseif BurstMode == 'on' then
+		windower.chat.input:schedule(21.5,'/ma "Fire V" '..SCtarget)
+	else if BurstMode == 'helix' then
+		windower.chat.input:schedule(21.5,'/ma "Pyrohelix II" '..SCtarget)
+	end
 end
 
 function sixstep()
 	windower.add_to_chat(122, '6step')
+	local SCtarget = Targeted.id
+	if buff_check(365) then
+	else
+	end
 end
 
 function check_job()
@@ -246,13 +278,16 @@ handle_commands = function(...)
 	end
 end
 
-function translate(term)
-	local cache = {}
-	if not cache[term] then
-		local entry = res.auto_translates:with('english', term)
-		cache[term] = entry and 'CH>HC':pack(0xFD, 0x0202, entry.id, 0xFD) or term
+do
+    local cache = {}
+    translate = function(term)
+        if not cache[term] then
+            local entry = res.auto_translates:with('english', term)
+            cache[term] = entry and 'CH>HC':pack(0xFD, 0x0202, entry.id, 0xFD) or term
+        end
+
+        return cache[term]
     end
-	return cache[term]
 end
 
 windower.register_event('addon command', handle_commands)
