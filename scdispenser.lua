@@ -37,7 +37,6 @@ texts = require('texts')
 res = require('resources')
 
 function init()
-	check_job()
 	Elements= T{'Fire','Water','Thunder','Stone','Aero','Blizzard','Light','Dark'}
 	Ele_index = 1
 	Skillchain = {}
@@ -124,13 +123,51 @@ function init()
 	HUD:bg_color(40, 40, 55)
 	HUD:pos(15,90)
 	HUD:color(Color[1], Color[2], Color[3])
-	HUD:show()
+	
+	if not check_job() then
+		HUD:hide()
+		return	
+	else
+		HUD:show()
+	end
 end
 
 function make_boom(arg)
+		--359 = dark arts
+		--402 = add: black
+		--470 = immanence
+		--365 = ebullience
+	if not buff_check(359) then
+		windower.add_to_chat(122, 'Dark Arts not active. Aborting skillchain')
+		return
+	end		
+
+	local Index = windower.ffxi.get_player().target_index 
+	local Target = windower.ffxi.get_mob_by_index(Index)
+	
+	if Target.is_npc then
+		windower.add_to_chat(122, 'BOOOM!')
+	else
+		windower.add_to_chat(122, tostring(Target.type))
+	end
+	
+		--windower.add_to_chat(122, index)
 end
 
 function check_job()
+	local Player = windower.ffxi.get_player()
+    if Player.main_job == "SCH" then
+        return true
+	else
+		return false
+	end
+end
+
+function buff_check(check)	
+	Buffs = T(windower.ffxi.get_player().buffs)
+	if Buffs:contains(check) then
+		return true
+	end
 end
 
 function update_element()
@@ -153,12 +190,9 @@ handle_commands = function(...)
 			if args[1] ~= nil and Elements:contains(args[1]) then
 				Ele_index = table.find(Elements, args[1])
 				update_element()				
-				--CurrentElement = args[1]
-				--Color = Colors[CurrentElement]
 				update_hud()
 			else
-				Ele_index = Ele_index + 1 
-				if Ele_index > #Elements then Ele_index = 1 end
+				Ele_index = Ele_index % 8 + 1 
 				update_element()
 				update_hud()
 			end
@@ -167,8 +201,7 @@ handle_commands = function(...)
 				Burst = args[1]
 				update_hud()
 			else
-				Burst_index = Burst_index + 1
-				if Burst_index > #Burst then Burst_index = 1 end
+				Burst_index = Burst_index % 3 + 1
 				BurstMode = Burst[Burst_index]
 				update_hud()
 			end
@@ -195,3 +228,6 @@ end
 windower.register_event('addon command', handle_commands)
 
 windower.register_event('load', init())
+
+windower.register_event('job change', init())
+ 
