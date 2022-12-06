@@ -28,7 +28,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 _addon.name = 'Skillchain Dispenser'
 _addon.author = 'Chendar'
-_addon.version = '1.0.0-alpha'
+_addon.version = '1.0.1'
 _addon.command = 'scd'
 _addon.commands = {'sc', 'element', 'burst', 'ebullience'}
 
@@ -124,11 +124,7 @@ function init()
 	HUD:pos(15,90)
 	HUD:color(Color[1], Color[2], Color[3])
 	
-	if check_job() then
-		HUD:show()
-	else
-		HUD:hide()
-	end
+	HUD:show()
 end
 
 function make_boom(arg)
@@ -137,7 +133,7 @@ function make_boom(arg)
 		--470 = immanence
 		--365 = ebullience		
 		--377 = tabula rasa
-	if not buff_check(359) then
+	if not (buff_check(359) or buff_check(402)) then
 		windower.add_to_chat(122, 'Dark Arts not active. Aborting skillchain')
 		return
 	elseif BurstMode == 'on' and not buff_check(402) then
@@ -146,7 +142,12 @@ function make_boom(arg)
 		update_hud()
 	end
 	
-	Targeted = windower.ffxi.get_mob_by_index(windower.ffxi.get_player().target_index)
+	local index = windower.ffxi.get_player().target_index
+	if index ~= nil then
+		Targeted = windower.ffxi.get_mob_by_index(index)
+	else
+		Targeted = nil
+	end
 	
 	if not Targeted.is_npc then
 		windower.add_to_chat(122, 'Invalid target. Aborting skillchain')
@@ -154,7 +155,7 @@ function make_boom(arg)
 	end
 	
 	if arg[1] ~= nil then 
-		if arg[1] == 'liquifusion' then
+		if arg[1] == 'liquefusion' then
 			liquefusion()
 			return
 		elseif arg[1] == 'sixstep' then
@@ -170,7 +171,14 @@ function make_boom(arg)
 	local SCcloser = Skillchain[CurrentElement].closer
 	local SCdelay = Skillchain[CurrentElement].delay
 	local SChelix = Skillchain[CurrentElement].mbhelix
-	local SCnuke = CurrentElement..' V'
+	local SCnuke
+	if CurrentElement == 'Light' then
+		SCnuke = SChelix
+	elseif CurrentElement == 'Dark' then	
+		SCnuke = SChelix
+	else
+		SCnuke = CurrentElement..' V'
+	end
 				
 	windower.chat.input('/p Opening SC: '..SCname..' - MB: '..SCelement..'.')
 	windower.chat.input('/ja Immanence <me>')
@@ -180,12 +188,12 @@ function make_boom(arg)
 	windower.chat.input:schedule(3 + SCdelay, '/ma '..SCcloser..' '..SCtarget)
 	
 	if BurstMode == 'on' and (Ebullience or buff_check(377)) then
-		windower.chat.input:schedule(10 + SCdelay,'/ja Ebullience <me>')
-		windower.chat.input:schedule(11 + SCdelay,'/ma '..SCnuke..' '..SCtarget)
+		windower.chat.input:schedule(8 + SCdelay,'/ja Ebullience <me>')
+		windower.chat.input:schedule(9 + SCdelay,'/ma '..SCnuke..' '..SCtarget)
 	elseif BurstMode == 'on' then
-		windower.chat.input:schedule(10 + SCdelay,'/ma '..SCnuke..' '..SCtarget)
-	else if BurstMode == 'helix' then
-		windower.chat.input:schedule(10 + SCdelay,'/ma '..SChelix..' '..SCtarget)
+		windower.chat.input:schedule(8 + SCdelay,'/ma '..SCnuke..' '..SCtarget)
+	elseif BurstMode == 'helix' then
+		windower.chat.input:schedule(8 + SCdelay,'/ma '..SChelix..' '..SCtarget)
 	end
 end
 
@@ -201,12 +209,12 @@ function liquefusion()
 	windower.chat.input:schedule(14.5, '/p Closing SC: Fusion - MB: Fire now!')
 	windower.chat.input:schedule(14.5, '/ma Ionohelix '..SCtarget)
 	if BurstMode == 'on' and (Ebullience or buff_check(377)) then
-		windower.chat.input:schedule(21.5,'/ja Ebullience <me>')
-		windower.chat.input:schedule(22.5,'/ma "Fire V" '..SCtarget)
+		windower.chat.input:schedule(19.5,'/ja Ebullience <me>')
+		windower.chat.input:schedule(20.5,'/ma "Fire V" '..SCtarget)
 	elseif BurstMode == 'on' then
-		windower.chat.input:schedule(21.5,'/ma "Fire V" '..SCtarget)
-	else if BurstMode == 'helix' then
-		windower.chat.input:schedule(21.5,'/ma "Pyrohelix II" '..SCtarget)
+		windower.chat.input:schedule(19.5,'/ma "Fire V" '..SCtarget)
+	elseif BurstMode == 'helix' then
+		windower.chat.input:schedule(19.5,'/ma "Pyrohelix II" '..SCtarget)
 	end
 end
 
@@ -219,10 +227,9 @@ function sixstep()
 end
 
 function check_job()
-	local Player = windower.ffxi.get_player()
-    if Player.main_job == "SCH" then
-        return true
-	end
+	if windower.ffxi.get_player().main_job_id ~= 20 then
+		return true
+	end	
 end
 
 function buff_check(check)	
@@ -240,6 +247,11 @@ end
 function update_hud()
 	HUD:text('Element: '..CurrentElement..'\n'..'Burst: '..BurstMode..'\n'..'Ebullience: '..tostring(Ebullience))
 	HUD:color(Color[1], Color[2], Color[3])
+	-- if check_job() then
+		-- HUD:show()
+	-- else
+		-- HUD:hide()
+	-- end
 end
 
 handle_commands = function(...)
@@ -294,5 +306,5 @@ windower.register_event('addon command', handle_commands)
 
 windower.register_event('load', init())
 
-windower.register_event('job change', init())
+windower.register_event('job change', update_hud())
  
