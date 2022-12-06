@@ -144,14 +144,17 @@ function make_boom(arg)
 		--359 = dark arts
 		--402 = add: black
 		--470 = immanence
-		--365 = ebullience
-		
+		--365 = ebullience		
 	if not buff_check(359) then
 		windower.add_to_chat(122, 'Dark Arts not active. Aborting skillchain')
 		return
-	end		
+	elseif BurstMode == 'on' and not buff_check(402) then
+		windower.add_to_chat(122, 'Addendum: Black not active. Turning Burst mode off')
+		BurstMode = 'off'
+		update_hud()
+	end
 	
-	local Targeted = windower.ffxi.get_mob_by_index(windower.ffxi.get_player().target_index)
+	Targeted = windower.ffxi.get_mob_by_index(windower.ffxi.get_player().target_index)
 	
 	if not Targeted.is_npc then
 		windower.add_to_chat(122, 'Invalid target. Aborting skillchain')
@@ -161,7 +164,10 @@ function make_boom(arg)
 	if arg[1] ~= nil then special = arg[1]:lower end
 	if special == 'liquifusion' or special == 'sixstep' then
 		special()
-	else
+		return
+	end
+	
+	target = Targeted.id
 		
 		--windower.add_to_chat(122, index)
 end
@@ -178,8 +184,6 @@ function check_job()
 	local Player = windower.ffxi.get_player()
     if Player.main_job == "SCH" then
         return true
-	else
-		return false
 	end
 end
 
@@ -218,7 +222,7 @@ handle_commands = function(...)
 			end
 		elseif cmd == 'burst' then
 			if args[1] ~= nil and Burst:contains(args[1]) then
-				Burst = args[1]
+				BurstMode = args[1]
 				update_hud()
 			else
 				Burst_index = Burst_index % 3 + 1
