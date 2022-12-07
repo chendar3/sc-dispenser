@@ -9,15 +9,22 @@ Note: Does not keep track of stratagem usage and timing may very well be off if 
 **Abbreviations:** scd
 
 **Commands:**
- 1. //scd sc ['liquefusion'|'sixstep']	 -- Starts making a skillchain of the selected element, or 3-step fire or 6step if those arguements are provided 
-											(6step not implemented yet)
-											
- 2. //scd element [Element]				 -- Element can be any of 'Stone', 'Water', 'Aero', 'Blizzard', 'Thunder', 'Light' or 'Dark' and is optional
-											if no Element is provided it will cycle through them.
-											
- 3. //scd burst ['on'|'off'|'helix']  	 -- Sets Burst mode to on, off or helix or cycles through them if no arguement is given.
+
+ 1. //scd sc [liquefusion|sixstep]	 
  
- 4. //scd ebullience 					 -- Toggles ebullience usage for the bursting on/off. Note that if tabula rasa is active it will use ebullience anyway.
+ -- Starts making a skillchain of the selected element, or 3step fire or 6step if those arguments are provided (6step not implemented yet)
+											
+ 2. //scd element [Element]			 
+ 
+ -- 'Element' can be any of 'Stone', 'Water', 'Aero', 'Blizzard', 'Thunder', 'Light' or 'Dark' and is optional. If no Element is provided it will cycle through them instead.
+											
+ 3. //scd burst [on|off|helix]  	 
+ 
+ -- Sets Burst mode to on, off or helix or cycles through them if no arguement is given. If 'on' or 'helix' it will automatically burst the correct tier 5 spell or helix 2. For light/dark it'll only ever do helix.
+ 
+ 4. //scd ebullience 					 
+ 
+ -- Toggles ebullience usage for the bursting on/off. Note that if tabula rasa is active it will always use ebullience in any case.
 
 **Changes:**  
 v1.0.1 - v1.0.2
