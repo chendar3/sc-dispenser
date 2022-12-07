@@ -121,7 +121,7 @@ function init()
 	HUD:size(12)
 	HUD:bg_alpha(200)	
 	HUD:bg_color(40, 40, 55)
-	HUD:pos(15,90)
+	HUD:pos(500,95)
 	HUD:color(Color[1], Color[2], Color[3])
 	
 	HUD:show()
