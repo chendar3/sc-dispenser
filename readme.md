@@ -1,6 +1,6 @@
 **Author:** Chendar  
 
-**Version:** 1.0.2
+**Version:** 1.0.3
 
 **Description:**  
 Simple addon for making skillchains using immancence on a scholar and bursting off of those if enabled. 
@@ -27,6 +27,9 @@ Note: Does not keep track of stratagem usage and timing may very well be off if 
  -- Toggles ebullience usage for the bursting on/off. Note that if tabula rasa is active it will always use ebullience in any case.
 
 **Changes:**  
+v1.0.2 - v1.0.3
+ * minor HUD tweaks	
+
 v1.0.1 - v1.0.2
  * added auto-translates to chat messages
  

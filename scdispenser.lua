@@ -28,7 +28,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 _addon.name = 'Skillchain Dispenser'
 _addon.author = 'Chendar'
-_addon.version = '1.0.2'
+_addon.version = '1.0.3'
 _addon.command = 'scd'
 _addon.commands = {'sc', 'element', 'burst', 'ebullience'}
 
@@ -119,9 +119,13 @@ function init()
 	HUD:text('Element: '..CurrentElement..'\n'..'Burst: '..BurstMode..'\n'..'Ebullience: '..tostring(Ebullience))
 	HUD:font('Impact')
 	HUD:size(12)
-	HUD:bg_alpha(200)	
+	HUD:bg_alpha(150)	
 	HUD:bg_color(40, 40, 55)
 	HUD:pos(500,95)
+	HUD:pad(5)
+	HUD:stroke_width(2)
+	HUD:stroke_color(255,255,255)
+	HUD:stroke_alpha(0)
 	HUD:color(Color[1], Color[2], Color[3])
 	
 	HUD:show()
@@ -241,6 +245,11 @@ end
 function update_hud()
 	HUD:text('Element: '..CurrentElement..'\n'..'Burst: '..BurstMode..'\n'..'Ebullience: '..tostring(Ebullience))
 	HUD:color(Color[1], Color[2], Color[3])
+	if CurrentElement == 'Dark' then
+		HUD:stroke_alpha(100)
+	else
+		HUD:stroke_alpha(0)
+	end
 end
 
 handle_commands = function(...)
