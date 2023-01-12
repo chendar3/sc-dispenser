@@ -28,7 +28,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 _addon.name = 'Skillchain Dispenser'
 _addon.author = 'Chendar'
-_addon.version = '1.0.3'
+_addon.version = '1.1.0'
 _addon.command = 'scd'
 _addon.commands = {'sc', 'element', 'burst', 'ebullience'}
 
@@ -225,9 +225,29 @@ end
 function sixstep()
 	windower.add_to_chat(122, '6step')
 	local SCtarget = Targeted.id
-	if buff_check(365) then
-	else
+	local delay = 0
+	
+	if buff_check(470) then
+		delay = 0
+	elseif buff_check(377) then
+		windower.chat.input('/ja Immanence <me>')
+		delay = 1
+	else 
+		windower.chat.input('/ja Immanence <me>')
+		delay = 15
 	end
+	
+	windower.chat.input:schedule(delay, '/ma Stone '..SCtarget)
+	windower.chat.input:schedule(delay + 4, '/ja Immanence <me>') 
+	windower.chat.input:schedule(delay + 5, '/ma Aero '..SCtarget)
+	windower.chat.input:schedule(delay + 9, '/ja Immanence <me>')
+	windower.chat.input:schedule(delay + 10, '/ma Stone '..SCtarget)
+	windower.chat.input:schedule(delay + 14, '/ja Immanence <me>')
+	windower.chat.input:schedule(delay + 15, '/ma Aero '..SCtarget)
+	windower.chat.input:schedule(delay + 19, '/ja Immanence <me>')
+	windower.chat.input:schedule(delay + 20, '/ma Stone '..SCtarget)
+	windower.chat.input:schedule(delay + 24, '/ja Immanence <me>')
+	windower.chat.input:schedule(delay + 25, '/ma Aero '..SCtarget)
 end
 
 function buff_check(check)	
