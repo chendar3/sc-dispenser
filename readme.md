@@ -1,9 +1,9 @@
 **Author:** Chendar  
 
-**Version:** 1.0.3
+**Version:** 1.1.0
 
 **Description:**  
-Simple addon for making skillchains using immancence on a scholar and bursting off of those if enabled. 
+Simple addon for making skillchains using immanence on a scholar and bursting off of those if enabled. 
 Note: Does not keep track of stratagem usage and timing may very well be off if you don't have capped (80%) fast cast on your scholar.
 
 **Abbreviations:** scd
@@ -12,7 +12,7 @@ Note: Does not keep track of stratagem usage and timing may very well be off if 
 
  1. //scd sc [liquefusion|sixstep]	 
  
- -- Starts making a skillchain of the selected element, or 3step fire or 6step if those arguments are provided (6step not implemented yet)
+ -- Starts making a skillchain of the selected element, or three-step fire or six-step if those arguments are provided. If using the six-step without tabula rasa active use immenance once and wait about 10 seconds before firing it off.
 											
  2. //scd element [Element]			 
  
@@ -27,6 +27,9 @@ Note: Does not keep track of stratagem usage and timing may very well be off if 
  -- Toggles ebullience usage for the bursting on/off. Note that if tabula rasa is active it will always use ebullience in any case.
 
 **Changes:**  
+v1.0.3 - v1.1.0
+ * sixstep option added for skillchains
+ 
 v1.0.2 - v1.0.3
  * minor HUD tweaks	
 
